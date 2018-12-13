@@ -21,13 +21,13 @@ constructor() {
 onHandleSubmit = async (event, Username, FirstName, LastName, Email, Password) => {
   event.preventDefault();
   const newBody = {
-    Username,
-    FirstName,
-    LastName,
-    Email,
-    Password
+    username: Username,
+    first_name: FirstName,
+    last_name: LastName,
+    email: Email,
+    password: Password
   }
-  await fetch('/users', {
+  await fetch('https://bank-backend.herokuapp.com/users', {
     headers: {
       'Content-Type': 'application/json'
     },
@@ -36,6 +36,7 @@ onHandleSubmit = async (event, Username, FirstName, LastName, Email, Password) =
   })
   .then((response) => response.json())
   .then((response) => {
+    console.log(response)
     this.setState({
       Username: "",
       FirstName: "",
