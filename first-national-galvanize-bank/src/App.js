@@ -16,33 +16,68 @@ constructor() {
     Email: "",
     Password: ""
   }
-
 }
 
-onHandleSubmit = () => {
-
+onHandleSubmit = async (event, Username, FirstName, LastName, Email, Password) => {
+  event.preventDefault();
+  const newBody = {
+    Username,
+    FirstName,
+    LastName,
+    Email,
+    Password
+  }
+  await fetch('/users', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify(newBody)
+  })
+  .then((response) => response.json())
+  .then((response) => {
+    this.setState({
+      Username: "",
+      FirstName: "",
+      LastName: "",
+      Email: "",
+      Password: ""
+    })
+  })
 }
 
-onChange = () => {
-
+onChangeInput = (event) => {
+  event.preventDefault();
+  const { value, name} = event.target;
+  console.log(this.state.Username, this.state.Password)
+  this.setState({
+    [name]: value
+  })
+  
 }
 
   render() {
     return (
       <BrowserRouter>
         <div>
+          <img src="https://cdna.artstation.com/p/assets/images/images/004/133/650/large/lincoln-renall-iron-bank-10.jpg?1480643272" alt="bank" />
           <Route
             exact
             path="/signup"
             render={(props) => 
-              <SignUpForm />
+              <SignUpForm {...this.state}
+              onChangeInput= {this.onChangeInput}
+              onHandleSubmit= {this.onHandleSubmit} />
             }
           />
           <Route
             exact
             path="/signin"
             render={(props) => 
-              <SignInForm />
+              <SignInForm {...this.state} 
+              onChangeInput= {this.onChangeInput}
+              onHandleSubmit= {this.onHandleSubmit}
+              />
             }
           />
         </div>
